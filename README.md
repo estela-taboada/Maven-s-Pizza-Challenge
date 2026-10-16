@@ -141,3 +141,82 @@ Optimización de carta: Si tras una campaña la pizza menos vendida no levanta v
 
 Estrategia de Optimización de Capacidad: Diversificación de Canales (Off-Premise)Problema identificado: La capacidad instalada de 15 mesas presenta picos de saturación operativa de hasta 126.7% durante las horas punta (13:00 y 19:00 hrs), generando cuellos de botella y posibles pérdidas de venta en salón.   Propuesta estratégica: Implementar canales de venta externos como Pickup / Curbside (recogida en tienda) y Delivery (entrega a domicilio) mediante integraciones digitales.Impacto operativo y financiero:Descompresión del salón: Desvía el volumen excedente fuera de las mesas físicas, reduciendo tiempos de espera y garantizando una experiencia óptima para los comensales en sitio.Incremento en facturación: Maximiza la rentabilidad por metro cuadrado y eleva el volumen global de ventas sin requerir una inversión de capital en ampliación física del local.Eficiencia laboral: Permite redistribuir y profesionalizar al personal de cocina y empaque, generando nuevos roles operativos especializados en despacho rápido.
 
+DASHBOARD INTERACTIVO 
+<img width="1150" height="618" alt="image" src="https://github.com/user-attachments/assets/601511c1-9b17-409a-b9b3-45e781b78358" />
+
+# 🍕 Pizza Sales & Operational Efficiency Analysis
+
+## 📌 Descripción del Proyecto
+Este proyecto analiza el rendimiento comercial y la capacidad operativa de una pizzería utilizando **SQL (SQLite)** para la extracción y transformación de datos, y **Power BI** para el modelado relacional y la visualización interactiva.
+
+El objetivo principal es diagnosticar el comportamiento de la demanda, identificar los productos de mayor y menor impacto en el menú, y evaluar la utilización del aforo físico (15 mesas / 60 asientos) para proponer soluciones de negocio basadas en datos.
+
+---
+
+## 📊 Dashboard Interactivo (Power BI)
+
+*(Agrega aquí tu captura de pantalla guardada en tu carpeta de imágenes)*
+![Dashboard Preview](assets/dashboard_preview.png)
+
+### Métricas Principales (KPIs)
+* **Ventas Totales:** $817.86K
+* **Volumen Total:** 50K pizzas producidas[cite: 11]
+* **Pedidos Únicos:** 21K órdenes registradas[cite: 11]
+* **Ticket Promedio (AOV):** $38.31[cite: 8, 11]
+
+---
+
+## 🛠️ Modelo de Datos y Arquitectura
+
+El modelo en Power BI se estructuró siguiendo un esquema relacional optimizado:
+* **`orders` (1)** $\rightarrow$ **`order_details` ($\ast$)** mediante `order_id`[cite: 5, 6]
+* **`pizzas` (1)** $\rightarrow$ **`order_details` ($\ast$)** mediante `pizza_id`[cite: 5, 6]
+* **`pizza_types` (1)** $\rightarrow$ **`pizzas` ($\ast$)** mediante `pizza_type_id`[cite: 5, 6]
+
+---
+
+## 🔍 Consultas SQL Clave
+
+### 1. Demanda y Ocupación de Mesas por Hora
+Evalúa el promedio de órdenes por hora y el pico máximo alcanzado en comparación con las 15 mesas físicas disponibles:
+
+```sql
+WITH ordenes_por_hora_dia AS (
+    SELECT 
+        date AS fecha,
+        substr(time, 1, 2) AS hora,
+        COUNT(*) AS total_ordenes
+    FROM orders
+    GROUP BY fecha, hora
+)
+SELECT 
+    hora,
+    ROUND(AVG(total_ordenes), 1) AS promedio_mesas_ocupadas,
+    MAX(total_ordenes) AS pico_maximo_mesas,
+    ROUND((AVG(total_ordenes) / 15.0) * 100, 1) AS pct_ocupacion_promedio,
+    ROUND((MAX(total_ordenes) / 15.0) * 100, 1) AS pct_ocupacion_maxima
+FROM ordenes_por_hora_dia
+GROUP BY hora
+ORDER BY promedio_mesas_ocupadas DESC;
+2. Top Pizzas Más y Menos VendidasIdentifica el volumen acumulado por sabor conectando las tablas de transacciones y catálogo:   SQLSELECT 
+    pt.name AS nombre_pizza,
+    SUM(od.quantity) AS total_vendidas
+FROM order_details od
+JOIN pizzas p 
+    ON od.pizza_id = p.pizza_id
+JOIN pizza_types pt 
+    ON p.pizza_type_id = pt.pizza_type_id
+GROUP BY nombre_pizza
+ORDER BY total_vendidas DESC;
+3. Cálculo de Ticket Promedio (AOV)SQLSELECT 
+    ROUND(SUM(od.quantity * p.price) / COUNT(DISTINCT od.order_id), 2) AS ticket_promedio
+FROM order_details od
+JOIN pizzas p 
+    ON od.pizza_id = p.pizza_id;
+📈 Fórmulas DAX DestacadasIngreso Total:Code snippetTotal Ventas = SUMX(order_details, order_details[quantity] * RELATED(pizzas[price]))
+Demanda Promedio por Hora (para visualización de aforo):Code snippetPromedio Pedidos por Hora = DIVIDE([Total Pedidos], DISTINCTCOUNT(orders[date]), 0)
+💡 Hallazgos Principales (Insights)Patrón Bimodal de Demanda: Existen dos ventanas críticas de consumo: el almuerzo (12:00–13:00 hrs) y la cena (17:00–19:00 hrs).   Saturación en Picos Extremos: Aunque el aforo promedio se mantiene en niveles saludables (~45% a 47%, equivalente a ~7 mesas ocupadas), los picos diarios alcanzan hasta 19 órdenes por hora, representando un 126.7% de ocupación frente a las 15 mesas disponibles[cite: 4].   Concentración de Menú:Productos Estrella: The Classic Deluxe (2,453 uds), The Barbecue Chicken (2,432 uds) y The Hawaiian Pizza (2,422 uds) lideran la rotación física.   Baja Rotación: The Brie Carre Pizza se posiciona como el producto con menor demanda del catálogo[cite: 11].🚀 Recomendaciones Estratégicas de NegocioDesacoplamiento de Capacidad (Canales Off-Premise): Implementar opciones de recogida en tienda (Pickup / Takeout) y entrega a domicilio (Delivery). Esto permite capturar la demanda excedente durante las horas de sobreocupación (>120%) sin saturar el salón comedor ni requerir inversiones en ampliación física[cite: 4].Optimización de Costos y Menú: Evaluar los ingredientes de baja rotación (como el queso brie). Se sugiere integrarlos en promociones cruzadas con las pizzas líderes o retirarlos de la carta regular para reducir riesgos de merma por caducidad.Activación de Horas Valle: Diseñar incentivos de consumo en salón entre las 14:00 y 16:00 hrs (donde la ocupación promedio desciende), rentabilizando los costos fijos de las mesas desocupadas.   📂 Estructura del RepositorioPlaintext├── assets/                  # Capturas del dashboard y diagramas
+├── data/                    # Archivos CSV fuente
+├── scripts/                 # Consultas SQL (.sql)
+├── pizza_sales_bi.pbix      # Archivo fuente de Power BI
+└── README.md                # Documentación del proyecto
