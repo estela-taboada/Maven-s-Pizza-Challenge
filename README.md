@@ -32,10 +32,12 @@ El modelo en Power BI se estructuró siguiendo un esquema relacional optimizado:
 ```dax
 Total Ventas = 
 SUMX(order_details, order_details[quantity] * RELATED(pizzas[price]))
+DIVIDE([Total Pedidos], DISTINCTCOUNT(orders[date]), 0
 
-1. Promedio Pedidos por Hora = 
-DIVIDE([Total Pedidos], DISTINCTCOUNT(orders[date]), 0)
-🔍 Análisis Técnico con SQL1. ¿Qué días y en qué horarios tenemos mayor afluencia?Top días con mayor afluencia combinada:SQLSELECT 
+🔍 Análisis Técnico con SQL
+1. ¿Qué días y en qué horarios tenemos mayor afluencia?Top días con mayor afluencia combinada:
+SQL
+SELECT 
     c2 AS dia,
     substr(c3, 1, 2) AS hora,
     COUNT(*) AS total_ordenes
