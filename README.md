@@ -29,14 +29,18 @@ El modelo en Power BI se estructuró siguiendo un esquema relacional optimizado:
 * **`pizza_types` (1)** $\rightarrow$ **`pizzas` ($\ast$)** mediante `pizza_type_id`[cite: 5, 6]
 
 ### Fórmulas DAX Destacadas
-```dax
-Total Ventas = 
+
+```Total Ventas = 
 SUMX(order_details, order_details[quantity] * RELATED(pizzas[price]))
 DIVIDE([Total Pedidos], DISTINCTCOUNT(orders[date]), 0
-
+```
 🔍 Análisis Técnico con SQL
-1. ¿Qué días y en qué horarios tenemos mayor afluencia?Top días con mayor afluencia combinada:
-SQL
+
+```SQL
+
+-- 1. ¿Qué días y en qué horarios tenemos mayor afluencia?
+Top días con mayor afluencia combinada:
+
 SELECT 
     c2 AS dia,
     substr(c3, 1, 2) AS hora,
@@ -47,7 +51,7 @@ GROUP BY dia, hora
 ORDER BY total_ordenes DESC
 LIMIT 14;
 
-Concentración general por hora:
+-- Concentración general por hora:
 SQL
 SELECT 
     substr(c3, 1, 2) AS hora,
@@ -57,7 +61,7 @@ WHERE c1 != 'order_id'
 GROUP BY hora
 ORDER BY total_ordenes DESC;
 
-## 2. ¿Cuántas pizzas preparamos durante los periodos de mayor demanda?
+-- 2. ¿Cuántas pizzas preparamos durante los periodos de mayor demanda?
 SQL
 SELECT 
     substr(o.c3, 1, 2) AS hora,
@@ -72,7 +76,7 @@ ORDER BY total_pizzas DESC;
 
 ### Hallazgo: En el intervalo pico del mediodía (12:00–13:00 hrs) la cocina alcanza su volumen máximo, registrando 6,776 pizzas producidas.
 
-### 3. ¿Cuáles son nuestras pizzas más y menos vendidas?Top Pizzas Más Vendidas (Mayor rotación):
+-- 3. ¿Cuáles son nuestras pizzas más y menos vendidas? Top Pizzas Más Vendidas (Mayor rotación):
 SQL
 SELECT 
     pt.name AS nombre_pizza,
@@ -129,20 +133,28 @@ SELECT
 FROM ordenes_por_hora_dia
 GROUP BY hora
 ORDER BY promedio_mesas_ocupadas DESC;
+```
 
-💡 Diagnóstico Operativo
-(Insights)Patrón Bimodal: La demanda se concentra en dos bloques definidos
+## *💡 Diagnóstico Operativo*
+
+* (Insights)Patrón Bimodal: La demanda se concentra en dos bloques definidos
 almuerzo (12:00–13:00 hrs) y cena (17:00–19:00 hrs).
-Capacidad Promedio vs. Picos Críticos: En promedio, el establecimiento opera a niveles saludables (43%–47% de ocupación, ~7 mesas ocupadas).
+* Capacidad Promedio vs. Picos Críticos: En promedio, el establecimiento opera a niveles saludables (43%–47% de ocupación, ~7 mesas ocupadas).
 No obstante, en jornadas pico las órdenes alcanzan hasta 19 pedidos/hora, generando una sobresaturación del 126.7% frente a las 15 mesas disponibles.
-Concentración de Ventas: The Classic Deluxe (2,453 uds), The Barbecue Chicken (2,432 uds) y The Hawaiian (2,422 uds) encabezan la preferencia, mientras que The Brie Carre muestra un rendimiento rezagado frente al resto de la carta[cite: 11].
-🚀 Recomendaciones Estratégicas de Negocio Desacoplamiento de Aforo (Estrategia Off-Premise):Implementar canales de Pickup / Curbside (recogida programada en tienda) y Delivery (entrega a domicilio). Esto permite monetizar los picos de demanda superiores al 100% de aforo sin requerir expansión en metros cuadrados ni saturar el área de mesas.
-Reestructuración Operativa y Empleabilidad:La apertura de canales para llevar justifica turnos de trabajo enfocados exclusivamente en empaque y despacho exprés durante las horas pico (12:00–14:00 y 18:00–20:00 hrs), agilizando la rotación de cocina sin comprometer el servicio en sala.
-Ingeniería de Menú (Menu Engineering):Diseñar promociones cruzadas (combos familiares) combinando una pizza líder con productos de baja rotación (The Brie Carre) para incentivar su consumo[cite: 11]. Si el volumen no repunta, retirarla del menú para reducir la merma de ingredientes perecederos exclusivos.
-Monetización de Horas Valle:Aprovechar la capacidad ociosa entre las 14:00 y 16:00 hrs mediante promociones de consumo exclusivo en mesa (happy hours o descuentos para oficinas locales).
+* Concentración de Ventas: The Classic Deluxe (2,453 uds), The Barbecue Chicken (2,432 uds) y The Hawaiian (2,422 uds) encabezan la preferencia, mientras que The Brie Carre muestra un rendimiento rezagado frente al resto de la carta[cite: 11].
 
+## 🚀 Recomendaciones Estratégicas de Negocio
+* Desacoplamiento de Aforo (Estrategia Off-Premise):Implementar canales de Pickup / Curbside (recogida programada en tienda) y Delivery (entrega a domicilio). Esto permite monetizar los picos de demanda superiores al 100% de aforo sin requerir expansión en metros cuadrados ni saturar el área de mesas.
+* Reestructuración Operativa y Empleabilidad:La apertura de canales para llevar justifica turnos de trabajo enfocados exclusivamente en empaque y despacho exprés durante las horas pico (12:00–14:00 y 18:00–20:00 hrs), agilizando la rotación de cocina sin comprometer el servicio en sala.
+* Ingeniería de Menú (Menu Engineering):Diseñar promociones cruzadas (combos familiares) combinando una pizza líder con productos de baja rotación (The Brie Carre) para incentivar su consumo[cite: 11]. Si el volumen no repunta, retirarla del menú para reducir la merma de ingredientes perecederos exclusivos.
+* Monetización de Horas Valle:Aprovechar la capacidad ociosa entre las 14:00 y 16:00 hrs mediante promociones de consumo exclusivo en mesa (happy hours o descuentos para oficinas locales).
+
+
+```
 📂 Estructura del RepositorioPlaintext├── assets/                  # Capturas del dashboard y resultados
 ├── data/                    # Archivos CSV fuente (Kaggle)
 ├── scripts/                 # Consultas SQL (.sql)
 ├── pizza_sales_bi.pbix      # Archivo fuente de Power BI Desktop
 └── README.md                # Documentación del proyecto
+
+```
