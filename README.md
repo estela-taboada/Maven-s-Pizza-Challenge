@@ -1,4 +1,4 @@
-### Markdown# 🍕 Maven's Pizza Challenge — Sales & Operational Efficiency Analysis
+### 🍕 Maven's Pizza Challenge — Sales & Operational Efficiency Analysis
 
 ## 📌 Contexto del Negocio
 Proyecto desarrollado a partir del dataset de **Kaggle** para el reto comercial *"Maven Pizza Challenge"*. 
