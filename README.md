@@ -24,9 +24,9 @@ El objetivo es asumir el rol de consultor BI para **Plato's Pizza** (restaurante
 ## 🛠️ Arquitectura y Modelo Relacional
 
 El modelo en Power BI se estructuró siguiendo un esquema relacional optimizado:
-* **`orders` (1)** $\rightarrow$ **`order_details` ($\ast$)** mediante `order_id`[cite: 5, 6]
-* **`pizzas` (1)** $\rightarrow$ **`order_details` ($\ast$)** mediante `pizza_id`[cite: 5, 6]
-* **`pizza_types` (1)** $\rightarrow$ **`pizzas` ($\ast$)** mediante `pizza_type_id`[cite: 5, 6]
+* **`orders` (1)** $\rightarrow$ **`order_details` ($\ast$)** mediante `order_id`.
+* **`pizzas` (1)** $\rightarrow$ **`order_details` ($\ast$)** mediante `pizza_id`.
+* **`pizza_types` (1)** $\rightarrow$ **`pizzas` ($\ast$)** mediante `pizza_type_id`.
 
 ### Fórmulas DAX Destacadas
 
@@ -114,7 +114,7 @@ SELECT
 FROM order_details od
 JOIN pizzas p 
     ON od.pizza_id = p.pizza_id;
-Ticket Promedio Resultante: $38.31 por pedido[cite: 8, 11].5. ¿Qué tan bien estamos aprovechando el aforo físico? (15 mesas / 60 asientos)
+Ticket Promedio Resultante: $38.31 por pedido ¿Qué tan bien estamos aprovechando el aforo físico? (15 mesas / 60 asientos)
 SQL
 WITH ordenes_por_hora_dia AS (
     SELECT 
