@@ -141,12 +141,12 @@ ORDER BY promedio_mesas_ocupadas DESC;
 almuerzo (12:00–13:00 hrs) y cena (17:00–19:00 hrs).
 * Capacidad Promedio vs. Picos Críticos: En promedio, el establecimiento opera a niveles saludables (43%–47% de ocupación, ~7 mesas ocupadas).
 No obstante, en jornadas pico las órdenes alcanzan hasta 19 pedidos/hora, generando una sobresaturación del 126.7% frente a las 15 mesas disponibles.
-* Concentración de Ventas: The Classic Deluxe (2,453 uds), The Barbecue Chicken (2,432 uds) y The Hawaiian (2,422 uds) encabezan la preferencia, mientras que The Brie Carre muestra un rendimiento rezagado frente al resto de la carta[cite: 11].
+* Concentración de Ventas: The Classic Deluxe (2,453 uds), The Barbecue Chicken (2,432 uds) y The Hawaiian (2,422 uds) encabezan la preferencia, mientras que The Brie Carre muestra un rendimiento rezagado frente al resto de la carta.
 
 ## 🚀 Recomendaciones Estratégicas de Negocio
 * Desacoplamiento de Aforo (Estrategia Off-Premise):Implementar canales de Pickup / Curbside (recogida programada en tienda) y Delivery (entrega a domicilio). Esto permite monetizar los picos de demanda superiores al 100% de aforo sin requerir expansión en metros cuadrados ni saturar el área de mesas.
 * Reestructuración Operativa y Empleabilidad:La apertura de canales para llevar justifica turnos de trabajo enfocados exclusivamente en empaque y despacho exprés durante las horas pico (12:00–14:00 y 18:00–20:00 hrs), agilizando la rotación de cocina sin comprometer el servicio en sala.
-* Ingeniería de Menú (Menu Engineering):Diseñar promociones cruzadas (combos familiares) combinando una pizza líder con productos de baja rotación (The Brie Carre) para incentivar su consumo[cite: 11]. Si el volumen no repunta, retirarla del menú para reducir la merma de ingredientes perecederos exclusivos.
+* Ingeniería de Menú (Menu Engineering):Diseñar promociones cruzadas (combos familiares) combinando una pizza líder con productos de baja rotación (The Brie Carre) para incentivar su consumo. Si el volumen no repunta, retirarla del menú para reducir la merma de ingredientes perecederos exclusivos.
 * Monetización de Horas Valle:Aprovechar la capacidad ociosa entre las 14:00 y 16:00 hrs mediante promociones de consumo exclusivo en mesa (happy hours o descuentos para oficinas locales).
 
 
